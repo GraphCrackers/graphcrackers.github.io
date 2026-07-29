@@ -3,10 +3,122 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GraphCrackers | ARETE Foundation Program</title>
+  <title>ARETE PROJECT | GraphCrackers</title>
+  <meta name="description" content="AI 시대를 주도하는 핵심 역량은 무엇인가? — ARETE Foundation Program by GraphCrackers">
+
+  <!-- 웹폰트: 영문 세리프 + 한글 세리프 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Serif+KR:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f2ede3;        /* 얕은 베이지 */
+      --ink: #1b1b1a;       /* 본문 잉크 */
+      --bronze: #9c7b3f;    /* 포인트 청동색 */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    /* 메인 타이틀 */
+    .hero__title {
+      font-family: 'Cormorant Garamond', 'Noto Serif KR', serif;
+      font-weight: 600;
+      font-size: clamp(2.6rem, 9vw, 5.5rem);
+      letter-spacing: 0.22em;
+      text-indent: 0.22em; /* letter-spacing으로 인한 중심 어긋남 보정 */
+      line-height: 1.1;
+
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 1.2s ease-out 0.3s forwards;
+    }
+
+    /* 청동색 구분선 */
+    .hero__rule {
+      width: 0;
+      height: 1px;
+      background-color: var(--bronze);
+      animation: drawLine 0.9s ease-out 1.4s forwards;
+    }
+
+    /* 서브 문구 */
+    .hero__question {
+      font-family: 'Noto Serif KR', serif;
+      font-weight: 400;
+      font-size: clamp(1rem, 3.2vw, 1.45rem);
+      letter-spacing: 0.06em;
+      color: var(--ink);
+
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 1.1s ease-out 2.0s forwards;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes drawLine {
+      to {
+        width: min(180px, 40vw);
+      }
+    }
+
+    /* 모션 최소화 설정 사용자 배려 */
+    @media (prefers-reduced-motion: reduce) {
+      .hero__title,
+      .hero__question {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+      .hero__rule {
+        animation: none;
+        width: min(180px, 40vw);
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>GraphCrackers</h1>
-  <p>ARETE Foundation Program — 준비 중</p>
+  <main class="hero">
+    <h1 class="hero__title">ARETE&nbsp;PROJECT</h1>
+    <div class="hero__rule" aria-hidden="true"></div>
+    <p class="hero__question">AI 시대를 주도하는 핵심 역량은 무엇인가?</p>
+  </main>
+
+  <script>
+    // 현재 페이지는 CSS 애니메이션만으로 동작.
+    // 추후 스크롤 유도, 문의 버튼 등 인터랙션 추가 시 이 영역에 작성.
+  </script>
 </body>
 </html>
