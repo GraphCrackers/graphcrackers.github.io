@@ -1,148 +1,383 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="no-js">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex"><!-- 정식 공개 시 이 줄 삭제 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-<title>ARETE PROJECT | GraphCrackers</title>
-<meta name="description" content="ARETE PROJECT — GraphCrackers 공식 웹사이트">
+<title>ARETE PROJECT</title>
+<meta name="description" content="AI 시대를 주도하는 핵심 역량은 무엇인가?">
 
+<meta name="robots" content="noindex"> <!-- 정식 공개 시 이 줄 삭제 -->
+
+<meta property="og:title" content="ARETE PROJECT">
+<meta property="og:description" content="AI 시대를 주도하는 핵심 역량은 무엇인가?">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://graphcrackers.github.io/">
-<meta property="og:title" content="ARETE PROJECT | GraphCrackers">
-<meta property="og:description" content="ARETE PROJECT — GraphCrackers 공식 웹사이트">
 
-<meta name="theme-color" content="#F3EEE2">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F3EEE2'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='20' font-weight='700' fill='%231F1C18'%3EA%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#F4EFE4">
 
-<!-- 폰트 조합: 라틴 대제목은 Noto Serif KR의 세리프 글리프로 정제된 인상을, 한글 부제목은 Pretendard로 모바일 가독성을 확보 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- 파비콘: 외부 이미지 파일 없이 인라인 SVG data URI -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F4EFE4'/%3E%3Crect x='22' y='22' width='20' height='20' fill='%2326221C'/%3E%3C/svg%3E">
+
+<!-- 폰트 조합 근거: 한글 본문은 가독성과 자간 균일성이 좋은 Pretendard, 라틴 대제목만 Noto Serif KR의 세리프로 눌러 정제된 위계를 만든다. -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600&display=swap">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&display=swap">
+
+<script>
+  /* 등장 효과용 클래스만 동기 부여. JS가 없으면 no-js 상태로 전부 그대로 보인다. */
+  document.documentElement.classList.remove('no-js');
+  document.documentElement.classList.add('js');
+</script>
 
 <style>
   :root{
-    --bg: #F3EEE2;
-    --ink: #1F1C18;
-    --ink-soft: #3A352E;
-    --font-latin: "Noto Serif KR", Georgia, "Times New Roman", serif;
-    --font-ko: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    --bg: #F4EFE4;                 /* 얕은 베이지 */
+    --ink: #26221C;                /* 본문/제목: 대비비 약 13.7:1 */
+    --ink-soft: #5A5147;           /* 보조 텍스트: 대비비 약 6.7:1 */
+    --line: #E2D9C6;               /* 1px 구분선 */
+    --font-ko: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+               "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", system-ui, sans-serif;
+    --font-latin: "Noto Serif KR", Georgia, "Times New Roman", Times, serif;
+    --pad-x: clamp(20px, 6vw, 40px);
+    --wrap: 680px;
+    --ease: cubic-bezier(0.16, 0.84, 0.44, 1);
   }
 
-  *, *::before, *::after { box-sizing: border-box; }
+  *, *::before, *::after{ box-sizing: border-box; }
 
-  html {
+  html, body{
     margin: 0;
     padding: 0;
     background: var(--bg);
     overflow-x: hidden;
-    -webkit-text-size-adjust: 100%;
   }
 
-  body {
-    margin: 0;
-    min-height: 100vh;      /* 폴백 */
-    min-height: 100dvh;     /* 모바일 주소창 대응 */
+  body{
+    font-family: var(--font-ko);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  .wrap{
+    width: 100%;
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding-left: max(var(--pad-x), env(safe-area-inset-left));
+    padding-right: max(var(--pad-x), env(safe-area-inset-right));
+  }
+
+  /* ── 섹션 1: 히어로 ───────────────────────────── */
+  .hero{
+    position: relative;
+    min-height: 100vh;             /* 폴백 */
+    min-height: 100dvh;            /* 모바일 주소창 대응 */
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding:
-      calc(24px + env(safe-area-inset-top))
-      calc(20px + env(safe-area-inset-right))
-      calc(24px + env(safe-area-inset-bottom))
-      calc(20px + env(safe-area-inset-left));
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--font-ko);
-    overflow-x: hidden;
-  }
-
-  .stage {
-    width: 100%;
-    max-width: 60rem;
     text-align: center;
+    padding-top: max(24px, env(safe-area-inset-top));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
   }
 
-  .title {
+  .hero h1{
     margin: 0;
     font-family: var(--font-latin);
     font-weight: 600;
-    font-size: clamp(1.375rem, 5.8vw, 4.25rem);
-    line-height: 1.1;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    /* 마지막 글자 뒤에도 자간이 붙어 중심이 왼쪽으로 밀리는 현상 보정 */
-    padding-left: 0.12em;
+    font-size: clamp(1.75rem, 8vw, 4.25rem);
+    letter-spacing: 0.1em;
+    text-indent: 0.1em;            /* 자간 때문에 생기는 우측 여백 보정 */
+    line-height: 1.15;
+    white-space: nowrap;           /* 360px에서도 한 줄 유지 */
+    color: var(--ink);
   }
 
-  .subtitle {
-    margin: clamp(0.875rem, 2.6vw, 1.5rem) 0 0;
-    color: var(--ink-soft);
-    font-weight: 500;
-    font-size: clamp(0.9375rem, 3.3vw, 1.375rem);
-    line-height: 1.6;
+  .hero p{
+    margin: clamp(16px, 3.4vw, 26px) 0 0;
+    font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+    line-height: 1.75;
     letter-spacing: -0.01em;
-    word-break: keep-all;   /* 한글 어절 단위 줄바꿈 */
-  }
-
-  /* 기본 비표시. 아래 HTML 주석을 해제하면 이 스타일이 적용된다 */
-  .contact {
-    margin: clamp(1.5rem, 4vw, 2.5rem) 0 0;
     color: var(--ink-soft);
-    font-size: clamp(0.8125rem, 2.6vw, 0.9375rem);
-    letter-spacing: 0.02em;
   }
 
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* 스크롤 유도: 텍스트/아이콘 없는 순수 CSS 셰브론 */
+  .cue{
+    position: absolute;
+    left: 50%;
+    bottom: calc(clamp(22px, 5vh, 40px) + env(safe-area-inset-bottom));
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    border-right: 1px solid var(--ink-soft);
+    border-bottom: 1px solid var(--ink-soft);
+    transform: rotate(45deg);
+    opacity: 0.55;
+    animation: cue-move 2.4s var(--ease) infinite;
+  }
+  @keyframes cue-move{
+    0%, 100%{ transform: translateY(0) rotate(45deg); }
+    50%     { transform: translateY(4px) rotate(45deg); }
   }
 
-  /* CSS 애니메이션이므로 JS 없이도 재생되고, 재생이 끝나면 문구가 남는다 */
-  .line { animation: rise 800ms cubic-bezier(.2,.6,.2,1) both; }
-  .title    { animation-delay: 0ms; }
-  .subtitle { animation-delay: 260ms; }
-  .contact  { animation-delay: 520ms; }
+  /* ── 공통 섹션 ────────────────────────────────── */
+  .band{
+    padding-top: clamp(64px, 12vw, 120px);
+    padding-bottom: clamp(64px, 12vw, 120px);
+    border-top: 1px solid var(--line);
+  }
 
-  /* JS가 동작할 때만 부여되는 클래스. 폰트 로드 전까지 재생을 보류한다 */
-  html.js-wait .line { animation-play-state: paused; }
+  .band h2{
+    margin: 0;
+    font-size: clamp(1.15rem, 4.6vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.55;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
 
-  @media (prefers-reduced-motion: reduce) {
-    .line { animation: none; }
+  .band p{
+    margin: clamp(20px, 4vw, 30px) 0 0;
+    font-size: clamp(0.98rem, 3.6vw, 1.075rem);
+    line-height: 1.8;
+    letter-spacing: -0.01em;
+    color: var(--ink-soft);
+  }
+
+  .band p.close{
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* 단계 나열 */
+  .steps{
+    list-style: none;
+    margin: clamp(24px, 4.5vw, 34px) 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px 10px;
+    font-size: clamp(0.9rem, 3.4vw, 1rem);
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+  .steps li{
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .steps li:not(:last-child)::after{
+    content: "";
+    display: block;
+    width: 16px;
+    height: 1px;
+    margin-left: 10px;
+    background: var(--ink-soft);
+    opacity: 0.5;
+  }
+
+  /* ── 섹션 3: 채널 링크 ────────────────────────── */
+  .channels-label{
+    margin: 0;
+    font-size: clamp(0.98rem, 3.6vw, 1.075rem);
+    line-height: 1.8;
+    color: var(--ink-soft);
+  }
+
+  .channels{
+    margin: clamp(20px, 4vw, 28px) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+  }
+
+  .channels a{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0 20px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: clamp(0.92rem, 3.4vw, 1rem);
+    letter-spacing: 0.01em;
+    transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+  }
+  .channels a:hover{ border-color: var(--ink-soft); }
+  .channels a:focus-visible,
+  .contact a:focus-visible{
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  /* ── 섹션 4: 푸터 ─────────────────────────────── */
+  .contact{
+    padding-top: clamp(40px, 8vw, 64px);
+    padding-bottom: calc(clamp(40px, 8vw, 64px) + env(safe-area-inset-bottom));
+  }
+  .contact p{ margin: 0; }
+  .contact a{
+    color: var(--ink-soft);
+    font-size: clamp(0.9rem, 3.4vw, 0.98rem);
+    line-height: 1.8;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+  }
+  .contact a:hover{ color: var(--ink); }
+
+  /* ── 등장 효과 (JS가 있을 때만 초기 숨김) ───────── */
+  .js .reveal{
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .js .reveal.is-in{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .js .hero .reveal{
+    transition: opacity 800ms ease-out, transform 800ms ease-out;
+  }
+  .js .hero p.reveal{ transition-delay: 250ms; }
+
+  .js .band .reveal,
+  .js .contact .reveal{
+    transition: opacity 700ms ease-out, transform 700ms ease-out;
+  }
+  .js .band .reveal:nth-child(2){ transition-delay: 80ms; }
+  .js .band .reveal:nth-child(3){ transition-delay: 160ms; }
+  .js .band .reveal:nth-child(4){ transition-delay: 240ms; }
+  .js .band .reveal:nth-child(5){ transition-delay: 320ms; }
+
+  /* ── 모션 최소화 ──────────────────────────────── */
+  @media (prefers-reduced-motion: reduce){
+    .js .reveal,
+    .reveal{
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .cue{ animation: none !important; }
+    *, *::before, *::after{
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 </style>
 
-<script>
-  (function () {
-    var root = document.documentElement;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce || !document.fonts || !document.fonts.ready) return;
-
-    root.classList.add('js-wait');
-
-    var released = false;
-    function release() {
-      if (released) return;
-      released = true;
-      root.classList.remove('js-wait');
-    }
-
-    document.fonts.ready.then(release);
-    setTimeout(release, 1200); /* 폰트 로드가 지연되어도 반드시 재생 */
-  })();
-</script>
+<noscript>
+  <style>
+    .reveal{ opacity: 1 !important; transform: none !important; }
+  </style>
+</noscript>
 </head>
 
 <body>
-  <main class="stage">
-    <h1 class="line title">ARETE PROJECT</h1>
-    <p class="line subtitle">AI 시대를 관통하는 핵심 역량은 무엇인가?</p>
-    <!-- 문의 이메일 표시가 필요하면 아래 줄의 주석만 해제
-    <p class="line contact">contact@graphcrackers.com</p>
-    -->
-  </main>
+
+  <!-- 섹션 1 — 히어로 -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <h1 id="hero-title" class="reveal">ARETE PROJECT</h1>
+      <p class="reveal">AI 시대를 주도하는 핵심 역량은 무엇인가?</p>
+    </div>
+    <span class="cue" aria-hidden="true"></span>
+  </section>
+
+  <!-- 섹션 2 — 문제 제기 &amp; 접근 방식 -->
+  <section class="band" aria-labelledby="s2-title">
+    <div class="wrap">
+      <h2 id="s2-title" class="reveal">수행평가와 세특, 대신 해주면 이번 한 번은 넘어갑니다.<br>그런데 다음 학기에도, 대학에 가서도 아이는 혼자 할 수 있을까요?</h2>
+
+      <p class="reveal">탐구는 주제를 하나 찍어주는 것으로 완성되지 않습니다. 문제의식에서 발표까지가 하나의 흐름으로 연결되어야 합니다.</p>
+
+      <ol class="steps reveal">
+        <li>문제의식</li>
+        <li>가설</li>
+        <li>탐구·분석</li>
+        <li>검증</li>
+        <li>발표·설득</li>
+      </ol>
+
+      <p class="reveal">ARETE는 주제만 던지는 컨설팅이 아니라, 이 전 과정을 한 곳에서 코칭하고 단계마다 피드백합니다. AI는 도구로 쓰되, 판단과 사고는 학생이 하도록 설계합니다. 결과물은 아이 손으로 남습니다.</p>
+
+      <p class="close reveal">첫 상담과 무료 시범 코칭으로, 아이에게 맞는지 먼저 확인해 보세요.</p>
+    </div>
+  </section>
+
+  <!-- 섹션 3 — 채널 링크 -->
+  <section class="band" aria-labelledby="s3-label">
+    <div class="wrap">
+      <p class="channels-label reveal" id="s3-label">채널에서 더 보기</p>
+
+      <div class="channels reveal">
+        <!-- 여기에 실제 주소를 붙여넣으세요 -->
+        <a href="{{INSTAGRAM_URL}}" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <!-- 여기에 실제 주소를 붙여넣으세요 -->
+        <a href="{{SOOMGO_URL}}" target="_blank" rel="noopener noreferrer">숨은고수</a>
+        <!-- 여기에 실제 주소를 붙여넣으세요 -->
+        <a href="{{KIMGWAIWO_URL}}" target="_blank" rel="noopener noreferrer">김과외</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 섹션 4 — 푸터 -->
+  <section class="band contact" aria-labelledby="contact-mail">
+    <div class="wrap">
+      <p class="reveal"><a id="contact-mail" href="mailto:contact@graphcrackers.com">contact@graphcrackers.com</a></p>
+    </div>
+  </section>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('js')) return;
+
+  /* (1) 폰트 로드 후 히어로 페이드인 시작 */
+  var heroItems = document.querySelectorAll('.hero .reveal');
+  var heroStarted = false;
+  function startHero() {
+    if (heroStarted) return;
+    heroStarted = true;
+    for (var i = 0; i < heroItems.length; i++) {
+      heroItems[i].classList.add('is-in');
+    }
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(startHero);
+    setTimeout(startHero, 1200); /* 폰트 로드 실패/지연 대비 */
+  } else {
+    startHero();
+  }
+
+  /* (2) 뷰포트 진입 시 섹션 요소 1회 등장 */
+  var items = document.querySelectorAll('.band .reveal, .contact .reveal');
+  if (!('IntersectionObserver' in window)) {
+    for (var j = 0; j < items.length; j++) items[j].classList.add('is-in');
+    return;
+  }
+  var io = new IntersectionObserver(function (entries, obs) {
+    for (var k = 0; k < entries.length; k++) {
+      if (entries[k].isIntersecting) {
+        entries[k].target.classList.add('is-in');
+        obs.unobserve(entries[k].target);
+      }
+    }
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  for (var m = 0; m < items.length; m++) io.observe(items[m]);
+})();
+</script>
+
 </body>
 </html>
