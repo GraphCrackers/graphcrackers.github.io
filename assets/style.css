@@ -280,8 +280,8 @@ p { text-wrap: pretty; }
 
 /* Subpages */
 .page-hero { padding-block: clamp(var(--size-16), 9vw, var(--size-24)); }
-.page-hero .page-title { max-width: 16ch; }
-.page-summary { max-width: var(--reading); margin-block-start: var(--size-6); color: var(--ink-2); font-size: var(--size-5); }
+.page-hero .page-title { max-width: 18ch; }
+.page-summary { max-width: 40rem; margin-block-start: var(--size-6); color: var(--ink-2); font-size: var(--size-5); }
 .prose { max-width: var(--reading); }
 .prose h2 { margin-block: var(--size-12) var(--size-4); font-size: var(--size-6); }
 .prose h3 { margin-block: var(--size-8) var(--size-3); font-size: var(--size-5); }
