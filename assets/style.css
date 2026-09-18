@@ -288,6 +288,8 @@ p { text-wrap: pretty; }
 .prose p + p, .prose ul, .prose ol { margin-block-start: var(--size-4); }
 .prose p, .prose li { color: var(--ink-2); }
 .prose a { color: var(--ink); }
+.prose a.button { color: var(--paper); }
+.prose a.button:hover { color: var(--ink); }
 .toc { margin-block-start: var(--size-10); padding-block: var(--size-4); display: flex; flex-wrap: wrap; gap: var(--size-2) var(--size-5); border-block: var(--rule-thin) solid var(--rule); }
 .toc a { min-height: var(--touch); display: inline-flex; align-items: center; font-size: var(--size-3); text-decoration: none; }
 .status-list { margin-block-start: var(--size-8); padding: var(--size-0); list-style: none; border-block-start: var(--rule-strong) solid var(--ink); }
