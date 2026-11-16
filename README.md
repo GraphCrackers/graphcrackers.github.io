@@ -6,9 +6,9 @@ GraphCrackers와 ARETE 프로그램을 소개하는 정적 웹사이트다. GitH
 
 - 빌드 도구와 프레임워크를 사용하지 않는 정적 HTML/CSS
 - JavaScript 없이 모든 콘텐츠와 링크 사용 가능
-- 모든 페이지가 `/assets/style.css` 하나를 공유
+- 모든 페이지가 공통 `/assets/style.css`를 쓰고, 학부모 안내·사업 소개 쪽과 첫 화면 입구는 `/assets/intro.css`를 더해 쓴다
 - HTML 인라인 스타일 금지
-- 모바일 우선, 전역 헤더의 네 메뉴는 항상 노출
+- 모바일 우선, 전역 헤더의 여섯 메뉴는 항상 노출
 - 확인되지 않은 프로그램 원고, 사업자 정보, 신청 폼 주소, 법률 문안은 임의로 게시하지 않음
 
 ## 파일 구조
@@ -21,7 +21,10 @@ GraphCrackers와 ARETE 프로그램을 소개하는 정적 웹사이트다. GitH
 ├── letters/index.html
 ├── contact/index.html
 ├── privacy/index.html
+├── parents/index.html
+├── business/index.html
 ├── assets/style.css
+├── assets/intro.css
 ├── scripts/validate_site.py
 ├── 404.html
 └── .nojekyll
@@ -41,7 +44,7 @@ python3 -m http.server 8000
 python3 scripts/validate_site.py .
 ```
 
-검증 항목은 내부 링크와 앵커, `<title>`과 설명 메타, 단일 CSS 사용, 인라인 스타일·스크립트 금지, 금지 이메일·플레이스홀더, 기본 텍스트 대비비다.
+검증 항목은 내부 링크와 앵커, `<title>`과 설명 메타, 공통 CSS(`style.css` · `intro.css`) 사용, 인라인 스타일·스크립트 금지, 금지 이메일·플레이스홀더, 기본 텍스트 대비비다.
 
 ## 공개 전 필요한 입력
 

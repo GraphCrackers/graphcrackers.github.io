@@ -124,6 +124,12 @@ def validate(root: Path) -> list[str]:
                 continue
             if contrast_ratio(colors[foreground], colors[background]) < 4.5:
                 failures.append(f"대비비 4.5:1 미만: --{foreground} / --{background}")
+    # intro.css 의 짙은 칸(기계 판독 · 시스템 구성)
+    for foreground, background in (("gc-s-ink", "gc-steel-d"), ("gc-steel-h", "gc-steel-d")):
+        if foreground not in colors or background not in colors:
+            failures.append(f"색 값을 읽지 못했습니다: --{foreground} / --{background}")
+        elif contrast_ratio(colors[foreground], colors[background]) < 4.5:
+            failures.append(f"대비비 4.5:1 미만: --{foreground} / --{background}")
     return failures
 
 
@@ -135,10 +141,14 @@ def css_colors(assets: Path) -> dict[str, str]:
         block = re.search(r":root\s*\{(.*?)\n\}", tokens.read_text(encoding="utf-8"), re.S)
         if block:
             definitions.update(re.findall(r"--([\w-]+):\s*([^;]+);", block.group(1)))
-    style = re.sub(r"/\*.*?\*/", "", (assets / "style.css").read_text(encoding="utf-8"), flags=re.S)
-    block = re.search(r":root\s*\{(.*?)\}", style, re.S)
-    if block:
-        definitions.update(re.findall(r"--([\w-]+):\s*([^;]+);", block.group(1)))
+    for name in ("style.css", "intro.css"):
+        sheet = assets / name
+        if not sheet.exists():
+            continue
+        style = re.sub(r"/\*.*?\*/", "", sheet.read_text(encoding="utf-8"), flags=re.S)
+        block = re.search(r":root\s*\{(.*?)\}", style, re.S)
+        if block:
+            definitions.update(re.findall(r"--([\w-]+):\s*([^;]+);", block.group(1)))
 
     def resolve(value: str, depth: int = 0) -> str | None:
         value = value.strip()
@@ -175,7 +185,7 @@ def main() -> int:
             print(f"- {failure}")
         return 1
     page_count = len(list(root.rglob("*.html")))
-    print(f"검증 통과: HTML {page_count}개, 내부 링크·메타데이터·단일 CSS·금지 문자열 확인")
+    print(f"검증 통과: HTML {page_count}개, 내부 링크·메타데이터·공통 CSS(style.css·intro.css)·금지 문자열 확인")
     return 0
 
 
