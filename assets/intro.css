@@ -1,0 +1,183 @@
+/* 학부모 안내 · 사업 소개 두 쪽과 첫 화면 「두 갈래 입구」에만 쓰는 스타일. style.css 다음에 불러온다.
+   색 · 굵기 · 선은 style.css 의 변수(--ink · --line …)와 디자인 토큰 사본(gc_tokens.css)의 변수만 부른다. 이 파일에 색 값을 새로 적지 않는다.
+   그림의 약속: 사람이 하는 칸은 흰 면 + 가는 테, 기계가 하는 칸은 짙은 면(--gc-steel-d), 사람이 확정하는 칸은 굵은 테.
+   노랑은 쪽의 단추 하나에만 두었다(그림의 「선생 확인」은 노란 면 대신 굵은 테 — 같은 쪽의 노란 단추가 먼저다). */
+
+/* 보통 단추 — 흰 면 + 테두리(노란 단추가 아닌 단추). style.css 의 .hero .button 과 같은 꼴을 어느 구역에서나 */
+.button.button-quiet, .prose a.button.button-quiet { border-color: var(--edge); background: var(--ground); color: var(--ink); }
+.button.button-quiet:hover, .prose a.button.button-quiet:hover { border-color: var(--ink); color: var(--ink); box-shadow: inset 0 0 0 var(--rule-thin) var(--ink); }
+.intro-actions { margin-block-start: var(--size-8); display: flex; flex-wrap: wrap; gap: var(--size-4); }
+.prose p.intro-actions { margin-block-start: var(--size-8); }
+
+/* 누가 하는 일 — 칸 안의 작은 딱지 */
+.who {
+  display: inline-block;
+  padding: 0 var(--size-2);
+  border: var(--rule-thin) solid var(--ink-2);
+  border-radius: var(--radius);
+  background: var(--ground);
+  color: var(--ink);
+  font-size: var(--size-3);
+  font-weight: var(--w-medium);
+  line-height: 1.7;
+  white-space: nowrap;
+}
+.who-machine { border-color: var(--gc-steel-d); background: var(--gc-steel-d); color: var(--gc-s-ink); }
+
+/* 그림 「수업 한 번의 흐름」 — 네 칸 가로, 좁은 화면에서는 세로로 쌓인다 */
+.flow-figure { margin-block-start: clamp(var(--size-10), 6vw, var(--size-16)); }
+.flow {
+  padding: var(--size-0);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--size-10);
+  list-style: none;
+}
+.flow-step {
+  position: relative;
+  padding: var(--size-5) var(--size-5) var(--size-6);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-3);
+  border: var(--rule-thin) solid var(--ink-2);
+  border-radius: var(--radius);
+  background: var(--ground);
+}
+.flow-name { font-size: var(--size-5); font-weight: var(--w-bold); line-height: 1.4; }
+.flow-step p { color: var(--ink-2); font-size: 0.9375rem; line-height: 1.7; }
+/* 기계가 하는 칸 — 짙은 면 */
+.flow-machine { border-color: var(--gc-steel-d); background: var(--gc-steel-d); color: var(--gc-s-ink); }
+.flow-machine p { color: var(--gc-steel-h); }
+.flow-machine .who { border-color: var(--gc-steel-h); background: var(--gc-steel-d); color: var(--gc-s-ink); }
+/* 사람이 확정하는 칸 — 굵은 테 */
+.flow-confirm { padding: calc(var(--size-5) - var(--rule-strong)) calc(var(--size-5) - var(--rule-strong)) calc(var(--size-6) - var(--rule-strong)); border: calc(var(--rule-strong) + var(--rule-thin)) solid var(--ink); }
+.flow-confirm .who { border-color: var(--ink); }
+/* 칸 사이 화살표 — 칸과 칸 사이 틈에 그린다 */
+.flow-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: calc(100% + var(--size-2));
+  width: calc(var(--size-10) - var(--size-4));
+  height: var(--size-4);
+  transform: translateY(-50%);
+  background: var(--ink-2);
+  clip-path: polygon(0 43%, 62% 43%, 62% 10%, 100% 50%, 62% 90%, 62% 57%, 0 57%);
+}
+.flow-figure figcaption, .system-figure figcaption { margin-block-start: var(--size-6); max-width: var(--reading); color: var(--ink-2); font-size: var(--size-3); }
+
+/* 그림 「시스템 구성」 — 세 층을 위아래로, 오른쪽 틈에 데이터에서 과정 설계로 돌아가는 점선 */
+.system-figure { min-width: 0; }
+.system {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--size-12);
+  column-gap: var(--size-0);
+}
+.system > .layer, .system > .link { grid-column: 1; }
+.layer {
+  padding: var(--size-5) var(--size-6) var(--size-6);
+  border: var(--rule-thin) solid var(--ink-2);
+  border-radius: var(--radius);
+  background: var(--ground);
+}
+.layer-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--size-2) var(--size-3); }
+.layer h3 { font-size: var(--size-5); font-weight: var(--w-bold); line-height: 1.4; }
+.layer p { margin-block-start: var(--size-3); color: var(--ink-2); font-size: 0.9375rem; line-height: 1.7; }
+/* 사람과 기계가 함께 하는 층 — 왼쪽에 기계의 짙은 띠 */
+.layer-mixed { padding-inline-start: calc(var(--size-6) - var(--size-2) + var(--rule-thin)); border-inline-start: var(--size-2) solid var(--gc-steel-d); }
+/* 기록이 쌓이는 층 — 옅은 회색 면 */
+.layer-record { background: var(--gc-p-card); }
+/* 층 사이 실선 화살표(갖춘 것) */
+.link {
+  min-height: var(--size-16);
+  padding-inline-start: var(--size-6);
+  display: flex;
+  align-items: center;
+  gap: var(--size-4);
+  color: var(--ink-2);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.link::before {
+  content: "";
+  flex: none;
+  align-self: stretch;
+  width: var(--size-4);
+  background: var(--ink-2);
+  clip-path: polygon(40% 0, 60% 0, 60% calc(100% - var(--size-3)), 100% calc(100% - var(--size-3)), 50% 100%, 0 calc(100% - var(--size-3)), 40% calc(100% - var(--size-3)));
+}
+/* 예정인 되돌림 — 화살표 대신 점선 표시를 앞에 두고 오른쪽 점선 고리 끝에 붙인다 */
+.link-planned { justify-content: flex-end; padding-inline-start: var(--size-0); text-align: end; }
+.link-planned::before { order: 2; align-self: center; width: var(--size-6); height: var(--size-0); background: none; clip-path: none; border-block-start: var(--rule-strong) dashed var(--ink-2); }
+/* 오른쪽 점선 고리 — 과정 설계 층 가운데(화살촉) ↔ 학생 역량 데이터 층 가운데 */
+.loop { position: relative; grid-column: 2; }
+.loop::before { content: ""; position: absolute; border: 0 dashed var(--ink-2); }
+.loop-top { grid-row: 1; }
+.loop-top::before { inset: 50% 50% 0 var(--size-3); border-block-start-width: var(--rule-strong); border-inline-end-width: var(--rule-strong); }
+.loop-top::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0;
+  width: var(--size-3);
+  height: var(--size-3);
+  transform: translateY(calc(-50% + var(--rule-thin)));
+  background: var(--ink-2);
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+}
+.loop-mid { grid-row: 2 / 5; }
+.loop-mid::before { inset: 0 50% 0 0; border-inline-end-width: var(--rule-strong); }
+.loop-bottom { grid-row: 5; }
+.loop-bottom::before { inset: 0 50% 50% 0; border-block-end-width: var(--rule-strong); border-inline-end-width: var(--rule-strong); }
+
+/* 운영 방식 — 넷을 두 줄 두 칸으로 */
+.intro-points {
+  padding: var(--size-0);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  border-block-start: var(--rule-strong) solid var(--ink);
+}
+.intro-points li { padding: var(--size-6) var(--size-6) var(--size-8) var(--size-0); border-block-end: var(--rule-thin) solid var(--rule); }
+.intro-points li:nth-child(even) { padding-inline-start: var(--size-6); border-inline-start: var(--rule-thin) solid var(--line); }
+.intro-points h3 { font-size: var(--size-5); font-weight: var(--w-medium); line-height: 1.4; }
+.intro-points p { margin-block-start: var(--size-3); color: var(--ink-2); font-size: 0.9375rem; line-height: 1.75; }
+
+/* 첫 화면 「두 갈래 입구」 — 카드 둘. 단추는 보통 단추(.button.button-quiet). 첫 화면의 노란 단추는 맺음 띠의 하나 그대로 */
+.gateway { padding-block: clamp(var(--size-12), 7vw, var(--size-20)); border-block-start: var(--rule-thin) solid var(--line); }
+.gateway-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(var(--size-5), 3vw, var(--size-8)); }
+.gateway-card {
+  padding: clamp(var(--size-6), 3vw, var(--size-10));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: var(--rule-thin) solid var(--ink-2);
+  border-block-start: var(--rule-strong) solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--ground);
+}
+.gateway-title { font-size: clamp(var(--size-6), 3vw, var(--size-8)); font-weight: var(--w-medium); letter-spacing: var(--tracking-tight); line-height: 1.35; }
+.gateway-text { margin-block-start: var(--size-4); flex: 1; color: var(--ink-2); }
+.gateway-card .button { margin-block-start: var(--size-6); }
+
+@media (max-width: 60rem) {
+  .flow { grid-template-columns: 1fr; gap: var(--size-10); }
+  .flow-step:not(:last-child)::after {
+    inset-block-start: calc(100% + var(--size-2));
+    inset-inline-start: var(--size-6);
+    width: var(--size-4);
+    height: calc(var(--size-10) - var(--size-4));
+    transform: none;
+    clip-path: polygon(43% 0, 57% 0, 57% 62%, 90% 62%, 50% 100%, 10% 62%, 43% 62%);
+  }
+}
+
+@media (max-width: 48rem) {
+  .system { grid-template-columns: minmax(0, 1fr) var(--size-8); }
+  .layer { padding: var(--size-4) var(--size-5) var(--size-5); }
+  .layer-mixed { padding-inline-start: calc(var(--size-5) - var(--size-2) + var(--rule-thin)); }
+  .intro-points { grid-template-columns: 1fr; }
+  .intro-points li, .intro-points li:nth-child(even) { padding-inline: var(--size-0); border-inline-start: var(--size-0); }
+  .gateway-grid { grid-template-columns: 1fr; }
+}
