@@ -277,6 +277,7 @@ p { text-wrap: pretty; }
   letter-spacing: var(--tracking-tight);
   line-height: 1.35;
 }
+.section-heading h2:first-child { margin-block-start: var(--size-0); }
 .lead, .section-intro { max-width: var(--reading); color: var(--ink-2); font-size: clamp(var(--size-4), 1.8vw, var(--size-5)); }
 .facts { margin-block: var(--size-10) var(--size-8); border-block-start: var(--rule-strong) solid var(--ink); }
 .facts div { padding-block: var(--size-4); display: grid; grid-template-columns: var(--size-24) 1fr; gap: var(--size-4); border-block-end: var(--rule-thin) solid var(--line); }
