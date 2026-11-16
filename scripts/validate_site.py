@@ -116,13 +116,41 @@ def validate(root: Path) -> list[str]:
     if not (root / ".nojekyll").exists():
         failures.append(".nojekyll 파일이 없습니다")
 
-    css = (root / "assets" / "style.css").read_text(encoding="utf-8")
-    colors = dict(re.findall(r"--([\w-]+):\s*(#[0-9a-fA-F]{6})", css))
+    colors = css_colors(root / "assets")
     for foreground in ("ink", "ink-2", "accent-text"):
         for background in ("ground", "paper"):
+            if foreground not in colors or background not in colors:
+                failures.append(f"색 값을 읽지 못했습니다: --{foreground} / --{background}")
+                continue
             if contrast_ratio(colors[foreground], colors[background]) < 4.5:
                 failures.append(f"대비비 4.5:1 미만: --{foreground} / --{background}")
     return failures
+
+
+def css_colors(assets: Path) -> dict[str, str]:
+    """style.css 의 변수를 6자리 색 값으로 푼다. var(--gc-…) 는 디자인 토큰 사본 gc_tokens.css 의 첫 :root 블록에서 찾는다."""
+    definitions: dict[str, str] = {}
+    tokens = assets / "gc_tokens.css"
+    if tokens.exists():
+        block = re.search(r":root\s*\{(.*?)\n\}", tokens.read_text(encoding="utf-8"), re.S)
+        if block:
+            definitions.update(re.findall(r"--([\w-]+):\s*([^;]+);", block.group(1)))
+    style = re.sub(r"/\*.*?\*/", "", (assets / "style.css").read_text(encoding="utf-8"), flags=re.S)
+    block = re.search(r":root\s*\{(.*?)\}", style, re.S)
+    if block:
+        definitions.update(re.findall(r"--([\w-]+):\s*([^;]+);", block.group(1)))
+
+    def resolve(value: str, depth: int = 0) -> str | None:
+        value = value.strip()
+        if re.fullmatch(r"#[0-9a-fA-F]{6}", value):
+            return value
+        reference = re.fullmatch(r"var\(--([\w-]+)\)", value)
+        if reference and depth < 10 and reference.group(1) in definitions:
+            return resolve(definitions[reference.group(1)], depth + 1)
+        return None
+
+    resolved = {name: resolve(value) for name, value in definitions.items()}
+    return {name: value for name, value in resolved.items() if value}
 
 
 def contrast_ratio(first: str, second: str) -> float:

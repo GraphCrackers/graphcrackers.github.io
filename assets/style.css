@@ -1,15 +1,31 @@
+/* 색 · 글꼴 · 줄무늬는 디자인 토큰 사본(gc_tokens.css)의 변수만 부른다. 이 파일에 색 값을 새로 적지 않는다.
+   사이트는 밝은 판 하나다(자바스크립트를 쓰지 않으므로 밝기 단추가 없다). 밝은 값은 종이판 토큰 --gc-p-*,
+   검정 띠(.closing) 안은 화면판 토큰 --gc-s-*(검정 전면 값)를 쓴다.
+   대외 · 읽는 지면 값(디자인 시스템 README 「대외 · 읽는 지면」): 큰 제목 500 · 가는 테두리 번호 · 가는 머리띠 · 옅은 구역 바탕 */
+@import url("gc_tokens.css");
+
 :root {
-  --ink: #1b1b1a;
-  --ink-2: #52514d;
-  --ink-3: #8a877f;
-  --paper: #ffffff;
-  --ground: #faf9f6;
-  --line: #e6e3da;
-  --rule: #d6d2c7;
-  --accent: #9c7b3f;
-  --accent-text: #74582d;
-  --font-display: "Cormorant Garamond", "Noto Serif KR", Georgia, serif;
-  --font-body: "Noto Serif KR", "Batang", "바탕", serif;
+  color-scheme: light;
+  --ink: var(--gc-p-ink);
+  --ink-2: var(--gc-p-ink-2);
+  --ink-3: var(--gc-p-mut);
+  --paper: var(--gc-p-card-soft);
+  --ground: var(--gc-p-paper);
+  --line: var(--gc-p-line);
+  --rule: var(--gc-p-rule);
+  --edge: var(--gc-steel-l);
+  --accent: var(--gc-yellow);
+  --on-accent: var(--gc-black);
+  --accent-text: var(--gc-p-ink);
+  --night: var(--gc-black);
+  --night-ink: var(--gc-s-ink);
+  --night-mut: var(--gc-s-mut);
+  --font-display: var(--gc-font-display);
+  --font-body: var(--gc-font);
+  --w-regular: var(--gc-w-regular);
+  --w-medium: var(--gc-w-medium);
+  --w-bold: var(--gc-w-bold);
+  --radius: var(--gc-radius);
   --size-0: 0;
   --size-1: 0.25rem;
   --size-2: 0.5rem;
@@ -32,9 +48,11 @@
   --touch: 2.75rem;
   --rule-thin: 0.0625rem;
   --rule-strong: 0.125rem;
+  --rule-mark: 0.125rem;
   --focus-width: 0.125rem;
-  --tracking-wide: 0.14em;
-  --tracking-tight: -0.025em;
+  --band: var(--gc-band-thin-px);
+  --tracking-wide: 0.12em;
+  --tracking-tight: -0.02em;
   --duration: 160ms;
   --duration-none: 0.01ms;
   --font-small: 0.7rem;
@@ -49,15 +67,19 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   font-size: var(--size-4);
+  font-weight: var(--w-regular);
   line-height: 1.8;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
+/* 머리띠 — 쪽 맨 위 해저드 줄무늬(가이드의 화면 자리: 위 머리띠). 쪽을 내리면 같이 올라가고 머리 메뉴만 붙어 있다.
+   대외 · 읽는 지면의 가는 머리띠(--gc-band-thin-px) — 줄무늬 굵기는 머리띠 값(M) 그대로 */
+body::before { content: ""; display: block; height: var(--band); background: var(--gc-hz-M-px); }
 a { color: inherit; text-decoration-thickness: var(--rule-thin); text-underline-offset: var(--size-1); }
-a:hover { color: var(--accent-text); }
-a:focus-visible { outline: var(--focus-width) solid var(--accent); outline-offset: var(--size-1); }
+a:hover { color: var(--ink); text-decoration-color: var(--accent); }
+a:focus-visible { outline: var(--focus-width) solid var(--ink); outline-offset: var(--size-1); }
 button, a { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 h1, h2, h3, p, figure, ol, dl, dd { margin: var(--size-0); }
 h1, h2, h3 { text-wrap: balance; }
@@ -71,10 +93,10 @@ p { text-wrap: pretty; }
   z-index: 100;
   padding: var(--size-2) var(--size-4);
   background: var(--ink);
-  color: var(--paper);
+  color: var(--ground);
   transform: translateY(-200%);
 }
-.skip-link:focus { color: var(--paper); transform: translateY(var(--size-0)); }
+.skip-link:focus { color: var(--ground); transform: translateY(var(--size-0)); }
 
 .site-header {
   position: sticky;
@@ -100,8 +122,8 @@ p { text-wrap: pretty; }
 .brand-primary, .footer-brand {
   font-family: var(--font-display);
   font-size: var(--size-5);
-  font-weight: 600;
-  letter-spacing: var(--tracking-wide);
+  font-weight: var(--w-bold);
+  letter-spacing: 0.01em;
   line-height: 1;
 }
 .brand-note {
@@ -120,10 +142,12 @@ p { text-wrap: pretty; }
   align-items: center;
   justify-content: center;
   font-size: var(--size-3);
-  font-weight: 600;
+  font-weight: var(--w-medium);
   text-decoration: none;
 }
-.global-nav a[aria-current="page"] { box-shadow: inset 0 calc(var(--rule-strong) * -1) var(--accent); color: var(--accent-text); }
+.global-nav a:hover, .footer-nav a:hover { box-shadow: inset 0 calc(var(--rule-thin) * -1) var(--ink); }
+/* 지금 쪽 표시 — 노란 밑줄(고른 표시는 단추가 아니라 노랑을 써도 되는 자리) */
+.global-nav a[aria-current="page"] { box-shadow: inset 0 calc(var(--rule-mark) * -1) var(--accent); color: var(--ink); }
 
 .hero {
   min-height: calc(100svh - var(--size-20));
@@ -134,10 +158,10 @@ p { text-wrap: pretty; }
   gap: clamp(var(--size-12), 8vw, var(--size-24));
 }
 .eyebrow {
-  color: var(--accent-text);
+  color: var(--ink-2);
   font-family: var(--font-display);
   font-size: var(--size-3);
-  font-weight: 600;
+  font-weight: var(--w-medium);
   letter-spacing: var(--tracking-wide);
   line-height: 1.4;
   text-transform: uppercase;
@@ -146,7 +170,7 @@ p { text-wrap: pretty; }
   max-width: 12ch;
   margin-block-start: var(--size-5);
   font-size: clamp(var(--size-10), 6.4vw, var(--size-20));
-  font-weight: 500;
+  font-weight: var(--w-medium);
   letter-spacing: var(--tracking-tight);
   line-height: 1.18;
 }
@@ -164,31 +188,39 @@ p { text-wrap: pretty; }
   flex-wrap: wrap;
   gap: var(--size-4) var(--size-6);
 }
+/* 단추 — 노란 단추는 쪽마다 하나(그 쪽에서 할 일). 첫 화면처럼 단추가 둘인 쪽은 위의 것(.hero)이 보통 단추다 */
 .button {
   min-height: var(--touch);
   padding: var(--size-3) var(--size-5);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: var(--rule-thin) solid var(--ink);
-  background: var(--ink);
-  color: var(--paper);
-  font-size: var(--size-3);
-  font-weight: 600;
+  border: var(--rule-thin) solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.875rem;
+  font-weight: var(--w-bold);
+  line-height: 1.3;
   text-decoration: none;
-  transition: background var(--duration), color var(--duration);
+  transition: border-color var(--duration), box-shadow var(--duration);
 }
-.button:hover { background: var(--ground); color: var(--ink); }
+.button:hover { color: var(--on-accent); border-color: var(--ink); box-shadow: inset 0 0 0 var(--rule-thin) var(--ink); }
+.button:focus-visible { outline: var(--focus-width) solid var(--ink); outline-offset: var(--size-1); }
+/* 보통 단추 — 흰 면 + 테두리 */
+.hero .button { border-color: var(--edge); background: var(--ground); color: var(--ink); }
+.hero .button:hover { border-color: var(--ink); color: var(--ink); }
 .text-link, .section-link {
   min-height: var(--touch);
   display: inline-flex;
   align-items: center;
   color: var(--ink-2);
   font-size: var(--size-3);
-  font-weight: 600;
+  font-weight: var(--w-medium);
   text-decoration: none;
   border-block-end: var(--rule-thin) solid var(--rule);
 }
+.text-link:hover, .section-link:hover { color: var(--ink); border-block-end-color: var(--ink); }
 
 .thinking-map { padding-inline-start: clamp(var(--size-5), 5vw, var(--size-12)); border-inline-start: var(--rule-thin) solid var(--rule); }
 .thinking-map figcaption { margin-block-end: var(--size-6); color: var(--ink-2); font-size: var(--size-3); }
@@ -209,6 +241,7 @@ p { text-wrap: pretty; }
   inset-inline-start: calc(var(--size-4) - (var(--rule-thin) / 2));
   border-inline-start: var(--rule-thin) solid var(--rule);
 }
+/* 번호 — 차분한 판은 검정 면 대신 가는 테두리(흰 바탕 · 먹 글자) */
 .thinking-map li > span {
   position: relative;
   z-index: 1;
@@ -216,18 +249,21 @@ p { text-wrap: pretty; }
   height: var(--size-8);
   display: inline-grid;
   place-items: center;
-  border: var(--rule-thin) solid var(--rule);
+  border: var(--rule-thin) solid var(--ink-2);
+  border-radius: var(--radius);
   background: var(--ground);
-  color: var(--ink-2);
+  color: var(--ink);
   font-family: var(--font-display);
   font-size: var(--size-3);
+  font-weight: var(--w-medium);
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
-.thinking-map strong { font-size: var(--size-4); }
+.thinking-map strong { font-size: var(--size-4); font-weight: var(--w-bold); }
 .thinking-map small { color: var(--ink-2); font-size: var(--size-3); }
 
 .section { padding-block: clamp(var(--size-16), 10vw, var(--size-24)); border-block-start: var(--rule-thin) solid var(--line); }
+/* 구역 바탕 — 대외 · 읽는 지면의 옅은 면(--gc-p-card-soft) */
 .section-paper { background: var(--paper); }
 .section-grid {
   display: grid;
@@ -237,7 +273,7 @@ p { text-wrap: pretty; }
 .section-heading h2, .closing h2, .page-title {
   margin-block-start: var(--size-4);
   font-size: clamp(var(--size-8), 4.5vw, var(--size-12));
-  font-weight: 500;
+  font-weight: var(--w-medium);
   letter-spacing: var(--tracking-tight);
   line-height: 1.35;
 }
@@ -245,7 +281,7 @@ p { text-wrap: pretty; }
 .facts { margin-block: var(--size-10) var(--size-8); border-block-start: var(--rule-strong) solid var(--ink); }
 .facts div { padding-block: var(--size-4); display: grid; grid-template-columns: var(--size-24) 1fr; gap: var(--size-4); border-block-end: var(--rule-thin) solid var(--line); }
 .facts dt { color: var(--ink-2); font-size: var(--size-3); }
-.facts dd { font-size: var(--size-3); font-weight: 600; }
+.facts dd { font-size: var(--size-3); font-weight: var(--w-medium); }
 .principles {
   margin-block-start: clamp(var(--size-12), 7vw, var(--size-20));
   padding: var(--size-0);
@@ -256,19 +292,36 @@ p { text-wrap: pretty; }
 }
 .principles li { padding: var(--size-6) clamp(var(--size-4), 3vw, var(--size-8)) var(--size-8) var(--size-0); border-block-end: var(--rule-thin) solid var(--rule); }
 .principles li + li { padding-inline-start: clamp(var(--size-4), 3vw, var(--size-8)); border-inline-start: var(--rule-thin) solid var(--line); }
-.principle-number { color: var(--accent-text); font-family: var(--font-display); font-size: var(--size-3); font-variant-numeric: tabular-nums; }
-.principles h3 { margin-block-start: var(--size-8); font-size: var(--size-5); font-weight: 600; }
+.principle-number {
+  min-width: 1.9em;
+  height: 1.9em;
+  padding: 0 0.35em;
+  display: inline-grid;
+  place-items: center;
+  border: var(--rule-thin) solid var(--ink-2);
+  border-radius: var(--radius);
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--size-3);
+  font-weight: var(--w-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.principles h3 { margin-block-start: var(--size-8); font-size: var(--size-5); font-weight: var(--w-medium); }
 .principles p { margin-block-start: var(--size-4); color: var(--ink-2); font-size: var(--size-3); }
 .section-link-end { margin-block-start: var(--size-8); }
-.notice { margin-block: var(--size-8); padding: var(--size-4) var(--size-5); border-inline-start: var(--rule-strong) solid var(--accent); background: var(--ground); color: var(--ink-2); font-size: var(--size-3); }
+.notice { margin-block: var(--size-8); padding: var(--size-4) var(--size-5); border-inline-start: var(--rule-mark) solid var(--edge); background: var(--ground); color: var(--ink-2); font-size: var(--size-3); }
 .notice strong { margin-inline-end: var(--size-3); color: var(--ink); }
 
-.closing { padding-block: clamp(var(--size-20), 13vw, var(--size-32)); background: var(--ink); color: var(--paper); }
+/* 맺음 띠 — 검정 전면. 노란 단추(이 쪽에서 할 일)가 검정 위에 놓인다 */
+.closing { padding-block: clamp(var(--size-20), 13vw, var(--size-32)); background: var(--night); color: var(--night-ink); }
 .closing-inner { text-align: center; }
-.closing .eyebrow { color: var(--rule); }
-.closing p:not(.eyebrow) { margin-block-start: var(--size-5); color: var(--rule); }
-.closing .button { margin-block-start: var(--size-8); border-color: var(--paper); background: var(--paper); color: var(--ink); }
-.closing .button:hover { background: var(--ink); color: var(--paper); }
+.closing .eyebrow { color: var(--night-mut); }
+.closing p:not(.eyebrow) { margin-block-start: var(--size-5); color: var(--night-mut); }
+.closing .button { margin-block-start: var(--size-8); }
+.closing .button:hover { border-color: var(--night-ink); box-shadow: inset 0 0 0 var(--rule-thin) var(--night-ink); }
+.closing .button:focus-visible { outline-color: var(--accent); }
 
 .site-footer { padding-block: var(--size-16) var(--size-6); border-block-start: var(--rule-thin) solid var(--rule); }
 .footer-grid { display: grid; grid-template-columns: 1.2fr 0.8fr 1fr; gap: var(--size-10); }
@@ -283,18 +336,19 @@ p { text-wrap: pretty; }
 .page-hero .page-title { max-width: 18ch; }
 .page-summary { max-width: 40rem; margin-block-start: var(--size-6); color: var(--ink-2); font-size: var(--size-5); }
 .prose { max-width: var(--reading); }
-.prose h2 { margin-block: var(--size-12) var(--size-4); font-size: var(--size-6); }
-.prose h3 { margin-block: var(--size-8) var(--size-3); font-size: var(--size-5); }
+.prose h2 { margin-block: var(--size-12) var(--size-4); font-size: var(--size-6); font-weight: var(--w-medium); }
+.prose h3 { margin-block: var(--size-8) var(--size-3); font-size: var(--size-5); font-weight: var(--w-medium); }
 .prose p + p, .prose ul, .prose ol { margin-block-start: var(--size-4); }
 .prose p, .prose li { color: var(--ink-2); }
 .prose a { color: var(--ink); }
-.prose a.button { color: var(--paper); }
-.prose a.button:hover { color: var(--ink); }
+.prose a.button, .prose a.button:hover { color: var(--on-accent); }
 .toc { margin-block-start: var(--size-10); padding-block: var(--size-4); display: flex; flex-wrap: wrap; gap: var(--size-2) var(--size-5); border-block: var(--rule-thin) solid var(--rule); }
-.toc a { min-height: var(--touch); display: inline-flex; align-items: center; font-size: var(--size-3); text-decoration: none; }
+.toc a { min-height: var(--touch); display: inline-flex; align-items: center; font-size: var(--size-3); font-weight: var(--w-medium); text-decoration: none; }
+.toc a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: var(--rule-strong); }
 .status-list { margin-block-start: var(--size-8); padding: var(--size-0); list-style: none; border-block-start: var(--rule-strong) solid var(--ink); }
 .status-list li { padding-block: var(--size-5); border-block-end: var(--rule-thin) solid var(--line); }
 .status-list span { display: block; color: var(--ink-2); font-size: var(--size-3); }
+.status-list strong { font-weight: var(--w-bold); }
 .back-to-top { margin-block-start: var(--size-12); }
 section[id] { scroll-margin-top: calc(var(--size-20) + var(--size-8)); }
 
